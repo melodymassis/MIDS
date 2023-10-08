@@ -9,5 +9,5 @@ scores = {"a": 1, "c": 3, "b": 3, "e": 1, "d": 2, "g": 2,
 def score_word(word):
     score = 0
     for letter in word:
-        score += scores.get(letter, 0)  # Use get() to handle wildcard characters
+        score += scores.get(letter.lower(), 0)  # Use get() to handle wildcard characters
     return score
