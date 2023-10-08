@@ -13,12 +13,7 @@ def run_scrabble(rack):
 
     if not (2 <= len(rack) <= 7):
         return "Invalid rack length. Please provide 2 to 7 characters."
-
-    # Check for invalid characters (numbers, symbols, etc.)
-    invalid_characters = set(rack) - set('abcdefghijklmnopqrstuvwxyz*?')
-    if invalid_characters:
-        return f"Invalid characters in the rack: {', '.join(invalid_characters)}"
-
+    
     wildcard_count = rack.count('?') + rack.count('*')
     if wildcard_count > 2:
         return "Too many wildcards. You can use up to one '?' and one '*'."
@@ -26,6 +21,10 @@ def run_scrabble(rack):
     if wildcard_count == 2 and not ('*' in rack and '?' in rack):
         return "Invalid wildcard usage. You can use either '?' or '*' as wildcards."
     
+    # Check for numeric characters in the rack
+    if any(char.isdigit() for char in rack):
+        return "Invalid characters in the rack. Please remove numbers."
+
     # read the list of valid Scrabble words from sowpods.txt
     with open("sowpods.txt", "r") as infile:
         valid_words = [word.strip() for word in infile.readlines()]
