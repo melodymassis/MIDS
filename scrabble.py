@@ -35,12 +35,16 @@ def run_scrabble(rack):
 
 
 def can_construct_word(word, rack):
+    """
+    This function checks if a given word can be constructed from a rack
+    with wildcard characters represented by '?' and '*' characters.
+    """
     # Convert both word and rack to lowercase
     word = word.lower()
     rack = rack.lower()
 
     # Count the number of wildcard characters in the rack
-    wildcard_count = rack.count('?')
+    wildcard_count = rack.count('?') + rack.count('*')
 
     # If there are no wildcard characters, use the original function
     if wildcard_count == 0:
@@ -54,8 +58,9 @@ def can_construct_word(word, rack):
 
     # If there are wildcard characters, generate all possible combinations
     # by replacing the wildcard with each letter of the alphabet
-    for char in 'abcdefghijklmnopqrstuvwxyz':
-        modified_rack = rack.replace('?', char)
+    wildcard_chars = 'abcdefghijklmnopqrstuvwxyz*'
+    for char in wildcard_chars:
+        modified_rack = rack.replace('?', char).replace('*', char)
         remaining_rack = list(modified_rack)
         for char in word:
             if char in remaining_rack:
