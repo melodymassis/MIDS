@@ -70,9 +70,10 @@ def can_construct_word(word, rack):
 
     # If there are wildcard characters, generate all possible combinations
     # by replacing the wildcard with each letter of the alphabet
-    wildcard_chars = 'abcdefghijklmnopqrstuvwxyz*'
+    
+    wildcard_chars = 'abcdefghijklmnopqrstuvwxyz'
     for char in wildcard_chars:
-        modified_rack = rack.replace('?', char).replace('*', char)
+        modified_rack = rack.replace('?', char)
         remaining_rack = list(modified_rack)
         for char in word:
             if char in remaining_rack:
@@ -82,4 +83,17 @@ def can_construct_word(word, rack):
         else:
             return True  # Word can be constructed
 
+    # Check for '*' wildcard separately
+    if '*' in rack:
+        modified_rack = rack.replace('*', char)
+        remaining_rack = list(modified_rack)
+        for char in word:
+            if char in remaining_rack:
+                remaining_rack.remove(char)
+            else:
+                break
+        else:
+            return True  # Word can be constructed with '*'
+
     return False  # Word cannot be constructed with any wildcard substitution
+
