@@ -85,15 +85,15 @@ def can_construct_word(word, rack):
 
     # Check for '*' wildcard separately
     if '*' in rack:
-        modified_rack = rack.replace('*', char)
-        remaining_rack = list(modified_rack)
-        for char in word:
-            if char in remaining_rack:
-                remaining_rack.remove(char)
+        for char in wildcard_chars:
+            modified_rack = rack.replace('*', char)
+            remaining_rack = list(modified_rack)
+            for char in word:
+                if char in remaining_rack:
+                    remaining_rack.remove(char)
+                else:
+                    break
             else:
-                break
-        else:
-            return True  # Word can be constructed with '*'
+                return True  # Word can be constructed with '*'
 
     return False  # Word cannot be constructed with any wildcard substitution
-
