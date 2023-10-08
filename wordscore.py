@@ -7,6 +7,10 @@ scores = {"a": 1, "c": 3, "b": 3, "e": 1, "d": 2, "g": 2,
          "x": 8, "z": 10}
 
 def score_word(word):
+    """
+    This function is super important yet straightforward
+    provides necessary function for the scrabble.py file
+    """
     score = 0
     for letter in word:
         score += scores.get(letter.lower(), 0)  # Use get() to handle wildcard characters
