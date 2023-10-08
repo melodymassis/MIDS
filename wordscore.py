@@ -10,8 +10,12 @@ def score_word(word):
     """
     This function is super important yet straightforward
     provides necessary function for the scrabble.py file
+    Handles wildcard '*' as a wildcard character 
     """
     score = 0
     for letter in word:
-        score += scores.get(letter.lower(), 0)  # Use get() to handle wildcard characters
+        letter_score = scores.get(letter.lower(), 0)
+        if letter_score == 0:
+            return 0  # Return 0 if any non-wildcard character is not found in the scores dictionary
+        score += letter_score
     return score
