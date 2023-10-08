@@ -1,11 +1,24 @@
 # scrabble.py
 from wordscore import score_word
 
+
 def run_scrabble(rack):
+    """
+    This function checks if valid Scrabble words can be constructed from the rack
+    and returns the valid words sorted by score and alphabetically.
+    """
     # Check for input errors
+    if not isinstance(rack, str):
+        return "Invalid input. Please provide a string as the rack."
+
     if not (2 <= len(rack) <= 7):
         return "Invalid rack length. Please provide 2 to 7 characters."
-    
+
+    # Check for invalid characters (numbers, symbols, etc.)
+    invalid_characters = set(rack) - set('abcdefghijklmnopqrstuvwxyz*?')
+    if invalid_characters:
+        return f"Invalid characters in the rack: {', '.join(invalid_characters)}"
+
     wildcard_count = rack.count('?') + rack.count('*')
     if wildcard_count > 2:
         return "Too many wildcards. You can use up to one '?' and one '*'."
@@ -17,7 +30,7 @@ def run_scrabble(rack):
     with open("sowpods.txt", "r") as infile:
         valid_words = [word.strip() for word in infile.readlines()]
 
-    # Initialize a list to store valid Scrable words along with their scores
+    # Initialize a list to store valid Scrabble words along with their scores
     valid_word_scores = []
 
     # iterate through the valid words and check if they can be constructed from the rack
@@ -26,7 +39,7 @@ def run_scrabble(rack):
             score = score_word(word)
             valid_word_scores.append((score, word.upper()))
 
-    # sort the list by score (desc order) and then alphabetically ( ascending order)
+    # sort the list by score (desc order) and then alphabetically (ascending order)
     valid_word_scores.sort(key=lambda x: (-x[0], x[1]))
 
     # return the sorted list and the total number of valid words
