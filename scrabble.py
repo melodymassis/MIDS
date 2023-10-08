@@ -34,9 +34,13 @@ def run_scrabble(rack):
 
 
 def can_construct_word(word, rack):
-    # making a copy of the rack to avoid modifying the original rack
+    # Convert both word and rack to lowercase
+    word = word.lower()
+    rack = rack.lower()
+
+    # Making a copy of the rack to avoid modifying the original rack
     remaining_rack = list(rack)
-    
+
     for char in word:
         if char in ('?', '*'):
             # Handle wildcard character
