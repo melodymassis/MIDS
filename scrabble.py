@@ -57,6 +57,3 @@ def can_construct_word(word, rack):
 
     return True
 
-result = run_scrabble("AEINRST")
-
-print(result)
