@@ -33,31 +33,36 @@ def run_scrabble(rack):
     return valid_word_scores, len(valid_word_scores)
 
 
+
 def can_construct_word(word, rack):
     # Convert both word and rack to lowercase
     word = word.lower()
     rack = rack.lower()
 
-    # Making a copy of the rack to avoid modifying the original rack
-    remaining_rack = list(rack)
+    # Count the number of wildcard characters in the rack
+    wildcard_count = rack.count('?')
 
-    for char in word:
-        if char in ('?', '*'):
-            # Handle wildcard character
-            if '?' in remaining_rack:
-                remaining_rack.remove('?')
-            elif '*' in remaining_rack:
-                remaining_rack.remove('*')
+    # If there are no wildcard characters, use the original function
+    if wildcard_count == 0:
+        remaining_rack = list(rack)
+        for char in word:
+            if char in remaining_rack:
+                remaining_rack.remove(char)
             else:
                 return False
-        elif char in remaining_rack:
-            remaining_rack.remove(char)
+        return True
+
+    # If there are wildcard characters, generate all possible combinations
+    # by replacing the wildcard with each letter of the alphabet
+    for char in 'abcdefghijklmnopqrstuvwxyz':
+        modified_rack = rack.replace('?', char)
+        remaining_rack = list(modified_rack)
+        for char in word:
+            if char in remaining_rack:
+                remaining_rack.remove(char)
+            else:
+                break
         else:
-            return False
+            return True  # Word can be constructed
 
-    # Check if there are any remaining characters in the rack
-    if remaining_rack:
-        return False
-
-    return True
-
+    return False  # Word cannot be constructed with any wildcard substitution
