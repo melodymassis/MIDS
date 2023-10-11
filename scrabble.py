@@ -1,6 +1,12 @@
 # scrabble.py
 from wordscore import score_word
 
+# Open sowpods.txt file once:
+def get_valid_words():
+        # read the list of valid Scrabble words from sowpods.txt
+    with open("sowpods.txt", "r") as infile:
+        valid_words = [word.strip() for word in infile.readlines()]
+    return valid_words
 
 def run_scrabble(rack):
     """
@@ -25,13 +31,12 @@ def run_scrabble(rack):
     if any(char.isdigit() for char in rack):
         return "Invalid characters in the rack. Please remove numbers."
 
-    # read the list of valid Scrabble words from sowpods.txt
-    with open("sowpods.txt", "r") as infile:
-        valid_words = [word.strip() for word in infile.readlines()]
+
 
     # Initialize a list to store valid Scrabble words along with their scores
+    valid_words = get_valid_words()
+    
     valid_word_scores = []
-
 
     # iterate through the valid words and check if they can be constructed from the rack
     for word in valid_words:
