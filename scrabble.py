@@ -2,8 +2,6 @@
 from wordscore import score_word
 
 
-
-
 def run_scrabble(rack):
     """
     This function checks if valid Scrabble words can be constructed from the rack
