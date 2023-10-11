@@ -32,15 +32,16 @@ def run_scrabble(rack):
     # Initialize a list to store valid Scrabble words along with their scores
     valid_word_scores = []
 
+
     # iterate through the valid words and check if they can be constructed from the rack
     for word in valid_words:
-        if can_construct_word(word, rack):
+        if len(word) <= len(rack) and can_construct_word(word, rack):
             score = score_word(word)
             valid_word_scores.append((score, word.upper()))
 
     # sort the list by score (desc order) and then alphabetically (ascending order)
     valid_word_scores.sort(key=lambda x: (-x[0], x[1]))
-
+    
     # return the sorted list and the total number of valid words
     return valid_word_scores, len(valid_word_scores)
 
@@ -73,7 +74,7 @@ def can_construct_word(word, rack):
     
     wildcard_chars = 'abcdefghijklmnopqrstuvwxyz'
     for char in wildcard_chars:
-        modified_rack = rack.replace('?', char)
+        modified_rack = rack.replace('?', char).replace('*',char)
         remaining_rack = list(modified_rack)
         for char in word:
             if char in remaining_rack:
@@ -82,18 +83,5 @@ def can_construct_word(word, rack):
                 break
         else:
             return True  # Word can be constructed
-
-    # Check for '*' wildcard separately
-    if '*' in rack:
-        for char in wildcard_chars:
-            modified_rack = rack.replace('*', char)
-            remaining_rack = list(modified_rack)
-            for char in word:
-                if char in remaining_rack:
-                    remaining_rack.remove(char)
-                else:
-                    break
-            else:
-                return True  # Word can be constructed with '*'
 
     return False  # Word cannot be constructed with any wildcard substitution
