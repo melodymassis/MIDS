@@ -72,7 +72,7 @@ def can_construct_word(word, rack):
     # Generate word combos with wildcsrds
     combinations = []
     
-    def generate_combinations(prefix, remaining_words):
+    def generate_combinations(prefix, remaining_word):
         if not remaining_word:
             combinations.append(prefix)
         else:
