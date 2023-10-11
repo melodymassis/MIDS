@@ -12,7 +12,7 @@ def run_scrabble(rack):
         return "Invalid input. Please provide a string as the rack."
 
     if not (2 <= len(rack) <= 7):
-        return "Invalid rack length. Please provide 2 to 7 characters."
+        return "Invalid rack length. Please input 2 to 7 characters."
     
     wildcard_count = rack.count('?') + rack.count('*')
     if wildcard_count > 2:
@@ -69,19 +69,26 @@ def can_construct_word(word, rack):
                 return False
         return True
 
-    # If there are wildcard characters, generate all possible combinations
-    # by replacing the wildcard with each letter of the alphabet
+    # Generate word combos with wildcsrds
+    combinations = []
     
-    wildcard_chars = 'abcdefghijklmnopqrstuvwxyz'
-    for char in wildcard_chars:
-        modified_rack = rack.replace('?', char).replace('*',char)
-        remaining_rack = list(modified_rack)
-        for char in word:
-            if char in remaining_rack:
-                remaining_rack.remove(char)
-            else:
-                break
+    def generate_combinations(prefix, remaining_words):
+        if not remaining_word:
+            combinations.append(prefix)
         else:
-            return True  # Word can be constructed
-
-    return False  # Word cannot be constructed with any wildcard substitution
+            char = remaining_word[0]
+            if char in rack:
+                generate_combinations(prefix + char, remaining_word[1:])
+            if '?' in rack:
+                for wildcard_char in 'abcdefghijklmnopqrstuvwxyz':
+                    generate_combinations(prefix + wildcard_char, remaining_word[1:])
+                    
+    generate_combinations('',word)
+    
+    # calc scores for each combo
+    max_score = 0
+    for combo in combinations:
+        score = score_word(combo)
+        max_score = max(max_score, score)
+    
+    return max_score > 0 #return true if valid combo with a non-zero score found

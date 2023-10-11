@@ -9,13 +9,13 @@ scores = {"a": 1, "c": 3, "b": 3, "e": 1, "d": 2, "g": 2,
 def score_word(word):
     """
     This function sums up scores for letters in the word based
-    on the scores provided above, also important as
+    on the scores provided above, 
     provides function referenced by scrabble.py file
     """
     score = 0
     for letter in word:
         letter_score = scores.get(letter.lower(), 0)
-        if letter_score == 0: #and letter != '*' and letter != '?':
+        if letter_score == 0 and letter != '*' and letter != '?':
             return 0  # Return 0 if any non-wildcard character is not found in the scores dictionary
         score += letter_score
     return score
