@@ -70,9 +70,9 @@ def can_construct_word(word, rack):
         return True
 
     # Generate word combos with wildcsrds
-    combinations = []
     
     def generate_combinations(prefix, remaining_word):
+        combinations = []
         if not remaining_word:
             combinations.append(prefix)
         else:
@@ -83,12 +83,6 @@ def can_construct_word(word, rack):
                 for wildcard_char in 'abcdefghijklmnopqrstuvwxyz':
                     generate_combinations(prefix + wildcard_char, remaining_word[1:])
                     
-    generate_combinations('',word)
+        generate_combinations('',word)
     
-    # calc scores for each combo
-    max_score = 0
-    for combo in combinations:
-        score = score_word(combo)
-        max_score = max(max_score, score)
     
-    return max_score > 0 #return true if valid combo with a non-zero score found
