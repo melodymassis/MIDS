@@ -1,18 +1,20 @@
 # scrabble.py
 from wordscore import score_word
 
-# Open sowpods.txt file once:
-def get_valid_words():
-        # read the list of valid Scrabble words from sowpods.txt
-    with open("sowpods.txt", "r") as infile:
-        valid_words = [word.strip() for word in infile.readlines()]
-    return valid_words
+
+
 
 def run_scrabble(rack):
     """
     This function checks if valid Scrabble words can be constructed from the rack
     and returns the valid words sorted by score and alphabetically.
     """
+    # Open sowpods.txt file once:
+    def get_valid_words():
+        with open("sowpods.txt", "r") as infile:
+            valid_words = [word.strip() for word in infile.readlines()]
+        return valid_words
+    
     # Check for input errors
     if not isinstance(rack, str):
         return "Invalid input. Please provide a string as the rack."
@@ -21,6 +23,7 @@ def run_scrabble(rack):
         return "Invalid rack length. Please input 2 to 7 characters."
     
     wildcard_count = rack.count('?') + rack.count('*')
+    
     if wildcard_count > 2:
         return "Too many wildcards. You can use up to one '?' and one '*'."
     
@@ -51,7 +54,6 @@ def run_scrabble(rack):
     return valid_word_scores, len(valid_word_scores)
 
 
-
 def can_construct_word(word, rack):
     """
     This function checks if a given word can be constructed from a rack
@@ -76,18 +78,16 @@ def can_construct_word(word, rack):
 
     # Generate word combos with wildcsrds
     
-    def generate_combinations(prefix, remaining_word):
-        combinations = []
-        if not remaining_word:
-            combinations.append(prefix)
+    wildcard_chars = 'abcdefghijklmnopqrstuvwxyz'
+    for char in wildcard_chars:
+        modified_rack = rack.replace('?', char).replace('*', char)
+        remaining_rack = list(modified_rack)
+        for char in word:
+            if char in remaining_rack:
+                remaining_rack.remove(char)
+            else:
+                break
         else:
-            char = remaining_word[0]
-            if char in rack:
-                generate_combinations(prefix + char, remaining_word[1:])
-            if '?' in rack:
-                for wildcard_char in 'abcdefghijklmnopqrstuvwxyz':
-                    generate_combinations(prefix + wildcard_char, remaining_word[1:])
-                    
-        generate_combinations('',word)
-    
-    
+            return True  # Word can be constructed
+
+    return False  # Word cannot be constructed with any wildcard substitution
